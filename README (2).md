@@ -452,3 +452,49 @@ This dataset can be used for:
 - Operational simulation
 - Commercial decision support
 
+## 🧮 Mathematical Foundation of the Optimization Score
+
+Unlike simple linear regression, this system utilizes an **XGBoost Regressor**, which calculates predictions using an ensemble of decision trees. However, the final optimization score can be broken down into a linear, explainable mathematical formula using Additive Feature Contributions (similar to SHAP values).
+
+### 1. The Core XGBoost Equation
+The final prediction for any given route is the sum of the outputs from all individual decision trees in the model:
+
+$$\hat{y}_i = \sum_{k=1}^{K} f_k(x_i)$$
+
+Where:
+* **$\hat{y}_i$** = The final predicted Optimization Score for route $i$.
+* **$K$** = The total number of decision trees in the model (e.g., 100).
+* **$f_k$** = A specific decision tree evaluating the route's parameters.
+* **$x_i$** = The vector of input features (Cost, Transit Time, Reliability, etc.).
+
+### 2. The Explainable Feature Formula
+For human interpretability and operational auditing, the system translates the tree ensemble into a linear additive formula. The score of any route is calculated as the **Base Score** plus the sum of the individual **Feature Impacts**:
+
+$$Score = Base\_Score + \sum_{j=1}^{N} Impact(Feature_j)$$
+
+Expanded out for the primary routing metrics, the formula is:
+
+$$Score = 0.5000 + \Delta_{Cost} + \Delta_{Time} + \Delta_{Reliability} + \Delta_{Capacity} + \Delta_{Risk}$$
+
+* **$Base\_Score$ (0.5000):** The global average score of all routes in the training dataset before any specific details are known.
+* **$\Delta$ (Delta / Impact):** The mathematical penalty (negative value) or bonus (positive value) applied by the AI based on that specific feature's value.
+
+### 3. Example Calculation Walkthrough
+Consider a route with the following inputs:
+* **Cost:** 15,000 SAR
+* **Transit Time:** 15.0 Hours
+* **Reliability:** 0.850
+
+The AI evaluates these facts against the historical baseline and applies the math:
+
+1. **Base Score:** `0.5000`
+2. **Cost Impact:** 15,000 SAR is slightly expensive for this cargo weight $\rightarrow$ `- 0.0850`
+3. **Time Impact:** 15 hours is a highly efficient transit time $\rightarrow$ `+ 0.1200`
+4. **Reliability Impact:** 0.850 is a strong, safe carrier metric $\rightarrow$ `+ 0.0650`
+5. **Other Impacts (Weather, Load, etc.):** $\rightarrow$ `- 0.0200`
+
+**Final Score Calculation:**
+
+$$Score = Base + (W_{rel} \times Rel) + (W_{cap} \times Cap) - (W_{cost} \times Cost_{penalty}) - (W_{time} \times Time_{penalty})$$
+
+**Verdict:** `0.5800` (Proceed With Caution). The excellent transit time (+0.12) is being dragged down by the expensive cost (-0.085), pushing it out of the "Highly Recommended" (>0.70) tier.
