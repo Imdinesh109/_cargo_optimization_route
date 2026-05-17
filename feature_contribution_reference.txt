@@ -1,0 +1,61 @@
+Feature Contribution Reference — Cargo Routing Optimization (CO-008)
+
+Target Variable:
+optimization_score
+
+Primary Logic:
+Higher optimization scores represent operationally superior routes.
+
+Core Feature Contributions:
+
+1. cost_sar
+- Lower cost improves optimization score.
+- High cost routes receive penalties unless justified by Express routing.
+
+2. total_transit_time_hours
+- Faster routes receive higher scores.
+- Longer transit duration reduces route attractiveness.
+
+3. reliability_score
+- Higher reliability strongly increases optimization score.
+- Reliability is reduced by:
+  - More connections
+  - Weather risk
+  - Economy routing
+
+4. weather_risk_score
+- Higher weather risk reduces optimization score.
+- Weather risk indirectly lowers reliability.
+
+5. num_connections
+- Direct routes preferred.
+- More transshipments reduce reliability and increase transit risk.
+
+6. capacity_available_kg
+- Routes must have sufficient available capacity.
+- Near-capacity routes receive penalties.
+
+7. load_factor
+- High load factor reduces operational flexibility.
+- Lower load factor improves optimization score.
+
+8. priority
+- Express routes prioritize reliability and speed.
+- Economy routes prioritize lower cost.
+
+9. cargo_type and shc_code
+- Special handling cargo receives additional operational constraints.
+- Dangerous goods and heavy cargo often receive slight penalties.
+- Pharmaceutical and perishable cargo receive stricter optimization evaluation.
+
+Approximate Relative Importance:
+- Cost Efficiency: 24%
+- Transit Time: 24%
+- Reliability: 22%
+- Weather Risk: 10%
+- Connections: 8%
+- Capacity: 7%
+- Load Factor: 5%
+
+Additional Noise:
+Small Gaussian noise added to preserve realism and avoid perfect deterministic behavior.

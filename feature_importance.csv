@@ -1,0 +1,17 @@
+Feature,Importance
+num_connections,39.726011441654215
+reliability_score,18.39396561803743
+cost_sar,15.405252029042718
+weather_risk_score,8.769586114315068
+capacity_available_kg,8.446240136862135
+load_factor,2.865435855993499
+cargo_weight_kg,2.4718467875015118
+total_transit_time_hours,1.730691031752991
+distance_km,1.3038280359168377
+priority,0.447809931626598
+shc_code,0.430089704722739
+season,0.009243312574260282
+airline,0.0
+origin,0.0
+destination,0.0
+cargo_type,0.0
