@@ -1,0 +1,19 @@
+# ==========================================
+# CARGO ROUTING AI - DEPENDENCIES
+# ==========================================
+
+# Core Data Operations
+pandas
+numpy
+
+# The AI / Machine Learning Engines
+xgboost         # The winning model (XGBRegressor)
+catboost        # The runner-up and feature explainer (CatBoostRegressor)
+scikit-learn    # Contains Random Forest, Decision Tree, Linear Regression, KNN, and Metrics
+
+# Data Visualization
+matplotlib
+seaborn
+
+# Model Exporting & Deployment
+joblib
